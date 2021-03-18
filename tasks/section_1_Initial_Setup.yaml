@@ -605,7 +605,7 @@
       More info: https://help.ubuntu.com/community/Grub2/Passwords
   tags:
     - section1
-    - level_1_server
+    # - level_1_server
     - level_1_workstation
     - 1.5.1
 # 1.5.2 Ensure permissions on bootloader config are configured
@@ -622,7 +622,7 @@
     mode: "og-rwx"
   tags:
     - section1
-    - level_1_server
+    # - level_1_server
     - level_1_workstation
     - 1.5.2
 

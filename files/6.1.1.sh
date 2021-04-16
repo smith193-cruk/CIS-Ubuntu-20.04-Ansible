@@ -1,8 +1,4 @@
 #!/bin/bash
-# Author: Ali Saleh Baker (alivlive@gmail.com)
-# Github: https://github.com/alivx/
-# Skype: alivxlive
-# 6.1.1.sh (c) 2020
 # Desc:  6.1.1 Audit system file permissions (Manual)
 # Created: 2020-09-17T14:00:49.313Z
 # Note: Correct any discrepancies found and rerun the audit until output is clean or risk is mitigated or accepted.

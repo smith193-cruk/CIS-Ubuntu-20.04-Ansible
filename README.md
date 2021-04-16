@@ -1,9 +1,4 @@
-<div align="center">
-  <img src="https://raw.githubusercontent.com/alivx/CIS-Ubuntu-20.04-Ansible/master/files/header.png">
-</div>
-
-
-Ansible CIS Ubuntu 20.04 LTS [![Build Status](https://travis-ci.com/alivx/CIS-Ubuntu-20.04-Ansible.svg?branch=master)](https://travis-ci.com/alivx/CIS-Ubuntu-20.04-Ansible)
+Ansible CIS Ubuntu 20.04 LTS 
 =========
 
 CIS hardened Ubuntu: cyber attack and malware prevention for mission-critical systems
@@ -91,7 +86,7 @@ Examples of config that should be immediately considered for exclusion:
 #5.1.8 Ensure cron is restricted to authorized users
 allowd_hosts: "ALL: 0.0.0.0/0.0.0.0, 192.168.2.0/255.255.255.0"
 # 5.2.17 Ensure SSH access is limited
-allowed_users: ali saleh baker root #Put None or list of users space between each user
+allowed_users: root #Put None or list of users space between each user
 
 ```
 
@@ -137,9 +132,6 @@ ansible-playbook -i host run.yaml -t section2 -t 6.1.1
 ```
 * Note:
 When run an individual task be sure from the dependencies between tasks, for example, if you run tag **4.1.1.2 Ensure auditd service is enabled** before running **4.1.1.1 Ensure auditd is installed** you will get an error at the run time.
-
-
-
 
 
 _________________
@@ -467,7 +459,5 @@ BSD
 
 Author Information
 ------------------
-
-The role was originally developed by [Ali Saleh Baker](https://www.linkedin.com/in/alivx/).
 
 When contributing to this repository, please first discuss the change you wish to make via a GitHub issue,  email, or via other channels with me :)

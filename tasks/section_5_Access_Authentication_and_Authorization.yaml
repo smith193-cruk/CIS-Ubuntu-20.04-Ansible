@@ -321,7 +321,7 @@
     state: present
     dest: /etc/ssh/sshd_config
     regexp: "^Ciphers"
-    line: "Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
+    line: "Ciphers aes256-ctr,aes192-ctr,aes128-ctr"
   tags:
     - section5
     - level_1_server
@@ -335,7 +335,7 @@
     state: present
     dest: /etc/ssh/sshd_config
     regexp: "^MACs"
-    line: "MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256"
+    line: "MACs hmac-sha2-512,hmac-sha2-256"
   tags:
     - section5
     - level_1_server
@@ -349,7 +349,8 @@
     state: present
     dest: /etc/ssh/sshd_config
     regexp: "^KexAlgorithms"
-    line: "KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256"
+    # line: "KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256"
+    line: "KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256"
   tags:
     - section5
     - level_1_server
@@ -485,8 +486,8 @@
   lineinfile:
     state: present
     dest: /etc/ssh/sshd_config
-    regexp: "^MaxStartups"
-    line: "MaxStartups 10:30:100"
+    regexp: "MaxStartups"
+    line: "MaxStartups 10:30:60"
   tags:
     - section5
     - level_1_server
@@ -733,7 +734,7 @@
       lineinfile:
         dest: /etc/pam.d/common-session
         regexp: '^session optional\s+'
-        line: "session optional  pam_umask.so"
+        line: "session optional pam_umask.so"
 
     - name: 5.4.4 Ensure default user umask is 027 or more restrictive - /etc/bash.bashrc
       lineinfile:
@@ -774,7 +775,7 @@
         dest: /etc/bash.bashrc
         create: true
         regexp: "^TMOUT="
-        line: "TMOUT={{ shell_timeout_sec }}  ;export TMOUT"
+        line: "readonly TMOUT={{ shell_timeout_sec }}  ;export TMOUT"
 
     - name: 5.4.5 Ensure default user shell timeout is 900 seconds or less - /etc/profile
       lineinfile:
@@ -782,7 +783,7 @@
         dest: /etc/profile
         create: true
         regexp: "^TMOUT="
-        line: "TMOUT={{ shell_timeout_sec }}  ;export TMOUT"
+        line: "readonly TMOUT={{ shell_timeout_sec }}  ;export TMOUT"
 
     - name: 5.4.5 Ensure default user shell timeout is 900 seconds or less - /etc/profile.d/timeout.sh
       lineinfile:
@@ -790,7 +791,7 @@
         dest: /etc/profile.d/tmout.sh
         create: true
         regexp: "^TMOUT="
-        line: "TMOUT={{ shell_timeout_sec }}  ;export TMOUT"
+        line: "readonly TMOUT={{ shell_timeout_sec }}  ;export TMOUT"
   tags:
     - section5
     - level_1_server
@@ -818,9 +819,16 @@
 # 5.6 Ensure access to the su command is restricted
 # Restricting the use of su , and using sudo in its place, provides system administrators better control of the escalation of user privileges to execute privileged commands. The sudo utility also provides a better logging and audit mechanism, as it can log each command executed via sudo , whereas su can only record that a user executed the su program.
 - name: 5.6 Ensure access to the su command is restricted
-  user:
-    name: "root"
-    groups: ["sudo"]
+  block:
+    - name: 5.6 Ensure access to the su command is restricted | Add new empty group
+      group:
+        name: "sugroup"
+        state: present
+    - name: 5.6 Ensure access to the su command is restricted | Add group to pam.d/su
+      lineinfile:
+        path: /etc/pam.d/su
+        line: "auth required pam_wheel.so use_uid group=sugroup"
+  
   tags:
     - section5
     - level_1_server

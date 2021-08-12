@@ -54,9 +54,10 @@ space_left_action: email
 action_mail_acct: root
 grub_backlog_limit: 8192
 #Section 3 Setting
-disable_wifi: False
+disable_wifi: True
 IPv6_is_enabled: Yes
-enable_firewall: yes
+enable_firewall: Yes
+firewall: iptables # Options are iptables or ufw
 list_of_ports_to_allow:
   - { rule: "allow", port: "8080", proto: "tcp" }
 #Section 2 Settings

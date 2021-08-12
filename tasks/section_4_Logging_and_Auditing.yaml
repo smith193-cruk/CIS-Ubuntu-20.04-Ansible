@@ -507,6 +507,8 @@
 - name: 4.2.3 Ensure permissions on all logfiles are configured
   shell: |
     find /var/log -type f -exec chmod g-wx,o-rwx "{}" + -o -type d -exec chmod g-w,o-rwx "{}" +
+  notify: 
+    - rsyslog restart
   tags:
     - section4
     - level_1_server

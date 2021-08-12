@@ -211,7 +211,7 @@
       lineinfile:
         dest: /etc/systemd/system/tmp.mount
         regexp: "^Options=mode="
-        line: "Options=mode=1777,strictatime,nosuid,nodev,noexec,size={{ temp_dir_size }}"
+        line: "Options=mode=1777,strictatime,nosuid,nodev,size={{ temp_dir_size }}"
 
     - name: 1.1.2 Ensure /tmp is configured | reload demon
       systemd:

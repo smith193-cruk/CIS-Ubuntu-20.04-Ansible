@@ -786,12 +786,15 @@
         line: "readonly TMOUT={{ shell_timeout_sec }}  ;export TMOUT"
 
     - name: 5.4.5 Ensure default user shell timeout is 900 seconds or less - /etc/profile.d/timeout.sh
-      lineinfile:
+      blockinfile:
         state: present
         dest: /etc/profile.d/tmout.sh
         create: true
         regexp: "^TMOUT="
-        line: "readonly TMOUT={{ shell_timeout_sec }}  ;export TMOUT"
+        block: |
+          TMOUT=900
+          readonly TMOUT
+          export TMOUT
   tags:
     - section5
     - level_1_server

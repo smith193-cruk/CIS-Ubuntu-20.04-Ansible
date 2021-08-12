@@ -443,13 +443,13 @@
       lineinfile:
         dest: /etc/rsyslog.conf
         regexp: '^\$ModLoad'
-        line: "$ModLoad imtcp"
+        line: "# $ModLoad imtcp"
 
     - name: 4.2.1.6 Ensure remote rsyslog messages are only accepted on designated log hosts. | $InputTCPServerRun
       lineinfile:
         dest: /etc/rsyslog.conf
         regexp: '^\$InputTCPServerRun'
-        line: "$InputTCPServerRun 514"
+        line: "# $InputTCPServerRun 514"
 
       notify:
         - rsyslog restart
